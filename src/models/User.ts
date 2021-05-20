@@ -29,6 +29,9 @@ class User {
   @UpdateDateColumn()
   updated_at: Date;
 
+  @Column()
+  avatar: string;
+
   // @OneToMany(() => Appointment, appointment => appointment.provider)
   // appointements: Array<Appointment>;
 }

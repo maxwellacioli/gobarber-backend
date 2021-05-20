@@ -1,7 +1,13 @@
 import { Router } from 'express';
+import multer from 'multer';
+import uploadConfig from '../config/upload';
+
 import CreateUserService from '../services/CreateUserService';
+import AuthMiddleware from '../middlewares/AuthMiddleware';
+import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
 const usersRouter = Router();
+const upload = multer(uploadConfig);
 
 usersRouter.post('/', async (req, res) => {
 
@@ -19,6 +25,20 @@ usersRouter.post('/', async (req, res) => {
     return res.json(user);
   } catch (error) {
     return res.status(400).json({ message: error.message });
+  }
+});
+
+//redundant declare this middleware here
+usersRouter.patch('/avatar', AuthMiddleware, upload.single('avatar'), async (req, res) => {
+  try {
+    const updateUserAvatar = new UpdateUserAvatarService();
+
+    const user = await updateUserAvatar.execute({ user_id: req.user.id, avatarFileName: req.file.filename });
+
+    return res.json(user);
+
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
   }
 });
 

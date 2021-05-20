@@ -26,6 +26,10 @@ export default function ensureAuth(
 
     const { sub } = decoded as TokenPayload;
 
+    req.user = {
+      id: sub
+    }
+
     return next();
   } catch (err) {
     throw Error('Invalid token!');

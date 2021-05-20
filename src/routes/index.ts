@@ -7,10 +7,11 @@ import AuthMiddleware from '../middlewares/AuthMiddleware';
 const routes = Router();
 
 routes.use('/sessions', sessionsRouter);
+routes.use('/users', usersRouter);
 
 routes.use(AuthMiddleware); //routes authenticated
 routes.use('/appointments', appointmentsRouter);
-routes.use('/users', usersRouter);
+
 
 
 export default routes;
