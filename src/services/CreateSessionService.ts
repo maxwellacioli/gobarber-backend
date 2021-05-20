@@ -4,6 +4,7 @@ import { sign } from 'jsonwebtoken';
 
 import authConfig from '../config/auth';
 import User from '../models/User';
+import AppError from '../errors/AppError';
 
 interface RequestDTO {
   email: string;
@@ -24,7 +25,7 @@ class CreateSessionService {
       await usersRepository.findOne({ email });
 
     if (!user) {
-      throw Error(`Incorrect email/password!`);
+      throw new AppError(`Incorrect email/password`);
     }
 
     const passwordHashed = user.password != null ? user.password : '';
@@ -46,7 +47,7 @@ class CreateSessionService {
       return { user, token };
     }
     else {
-      throw Error(`Incorrect email/password!`);
+      throw new AppError(`Incorrect email/password`, 401);
     }
   }
 }

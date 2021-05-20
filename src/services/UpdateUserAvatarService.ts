@@ -4,6 +4,7 @@ import uploadConfig from '../config/upload';
 import fs from 'fs';
 
 import User from '../models/User';
+import AppError from '../errors/AppError';
 
 interface RequestDTO {
   user_id: string;
@@ -18,7 +19,7 @@ class UpdateUserAvatarService {
     const user = await usersRepository.findOne({ where: { id: user_id } });
 
     if (!user) {
-      throw Error(`User not authenticated!`);
+      throw new AppError(`User not authenticated`, 401);
     }
 
     if (user.avatar) {
